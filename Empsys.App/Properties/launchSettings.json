@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Empsys.App (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Empsys.App (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

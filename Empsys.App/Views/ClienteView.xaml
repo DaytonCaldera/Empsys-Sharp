@@ -1,0 +1,51 @@
+<Page
+    x:Class="Empsys.App.Views.ClienteView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="using:Empsys.App.ViewModels"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <StackPanel Padding="40" Spacing="20" MaxWidth="500" HorizontalAlignment="Left">
+        <TextBlock Text="Gestión de Clientes" Style="{ThemeResource TitleTextBlockStyle}" />
+        <TextBlock Text="Módulo de Control y Altas" Foreground="Gray" Margin="0,-15,0,10"/>
+
+        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+            <TextBox Grid.Column="0" 
+                     Header="Cédula del Cliente" 
+                     Text="{x:Bind ViewModel.Cedula, Mode=TwoWay}" 
+                     PlaceholderText="Ej. 1-1234-5678"/>
+
+            <Button Grid.Column="1" 
+                    Content="Buscar" 
+                    Command="{x:Bind ViewModel.BuscarClienteCommand}"
+                    VerticalAlignment="Bottom"/>
+        </Grid>
+
+        <TextBox Header="Nombre Completo" 
+                 Text="{x:Bind ViewModel.NombreCompleto, Mode=TwoWay}" 
+                 PlaceholderText="Nombre y Apellidos"/>
+
+        <ComboBox Header="Nivel de Confianza (Riesgo)" 
+                  ItemsSource="{x:Bind ViewModel.NivelesRiesgo, Mode=OneWay}"
+                  SelectedItem="{x:Bind ViewModel.SelectedNivelRiesgo, Mode=TwoWay}"
+                  HorizontalAlignment="Stretch"/>
+
+        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+            <Button Grid.Column="0" 
+                    Content="Guardar / Actualizar" 
+                    Command="{x:Bind ViewModel.GuardarClienteCommand}" 
+                    Style="{ThemeResource AccentButtonStyle}"
+                    HorizontalAlignment="Stretch"/>
+
+            <Button Grid.Column="1" 
+                    Content="Limpiar" 
+                    Command="{x:Bind ViewModel.LimpiarPantallaCommand}" 
+                    HorizontalAlignment="Stretch"/>
+        </Grid>
+
+        <TextBlock Text="{x:Bind ViewModel.Mensaje, Mode=OneWay}" 
+                   Foreground="SteelBlue" 
+                   TextWrapping="Wrap"
+                   FontWeight="SemiBold"/>
+    </StackPanel>
+</Page>
