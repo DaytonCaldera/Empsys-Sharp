@@ -16,7 +16,10 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Clientes" Tag="ClientesPage" Icon="People" />
                 <NavigationViewItemSeparator/>
-                <NavigationViewItemHeader Content="Inventario y Empeños"/>
+                <NavigationViewItemHeader Content="Empeños"/>
+                <NavigationViewItem Content="Contratos" Tag="ContratosPage" Icon="Document" />
+                <NavigationViewItemSeparator/>
+                <NavigationViewItemHeader Content="Inventario"/>
                 <NavigationViewItem Content="Familias" Tag="FamiliasPage" Icon="Folder" />
                 <NavigationViewItem Content="Categorías" Tag="CategoriasPage" Icon="Tag" />
                 <NavigationViewItem Content="Artículos" Tag="ArticulosPage" Icon="Document" />

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Empsys.Core.Data;
 using Empsys.Core.Models;
 using Empsys.Core.Services;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Empsys.Tests
@@ -12,7 +13,8 @@ namespace Empsys.Tests
 
         public ContratoServiceTests()
         {
-            _service = new ContratoService();
+            var dbContext = new EmpsysDbContext();
+            _service = new ContratoService(dbContext);
         }
 
         [Fact]
@@ -26,11 +28,11 @@ namespace Empsys.Tests
                 MontoPrestamo = 5000
             };
 
-            var listaArticulos = new List<Articulo>
+            var listaArticulos = new List<Inventario>
             {
-                new Articulo { Id = 1, NumeroContrato = 5050, Estado = EstadoArticulo.EMPENIADO, Descripcion = "Anillo de Oro" },
-                new Articulo { Id = 2, NumeroContrato = 5050, Estado = EstadoArticulo.EMPENIADO, Descripcion = "Reloj Suizo" },
-                new Articulo { Id = 3, NumeroContrato = 9999, Estado = EstadoArticulo.EMPENIADO, Descripcion = "Televisor de otro" }
+                new Inventario { Id = 1, NumeroContrato = 5050, Estado = EstadoArticulo.EMPENIADO },
+                new Inventario { Id = 2, NumeroContrato = 5050, Estado = EstadoArticulo.EMPENIADO},
+                new Inventario { Id = 3, NumeroContrato = 9999, Estado = EstadoArticulo.EMPENIADO}
             };
 
             // ACT
@@ -49,7 +51,7 @@ namespace Empsys.Tests
         {
             // ARRANGED
             var contrato = new Contrato { NumeroContrato = 1010, Estado = EstadoContrato.CANCELADO };
-            var articulos = new List<Articulo>();
+            var articulos = new List<Inventario>();
 
             // ACT
             bool resultado = _service.AnularContrato(contrato, articulos);
@@ -76,9 +78,9 @@ namespace Empsys.Tests
                 Estado = EstadoContrato.ACTIVO
             };
 
-            var articulos = new List<Articulo>
+            var articulos = new List<Inventario>
             {
-                new Articulo { Id = 10, NumeroContrato = 7001, Estado = EstadoArticulo.EMPENIADO }
+                new Inventario { Id = 10, NumeroContrato = 7001, Estado = EstadoArticulo.EMPENIADO }
             };
 
             // ACT: El cliente renueva el contrato hoy
@@ -109,9 +111,9 @@ namespace Empsys.Tests
                 Estado = EstadoContrato.ACTIVO
             };
 
-            var articulos = new List<Articulo>
+            var articulos = new List<Inventario>
             {
-                new Articulo { Id = 11, NumeroContrato = 7002, Estado = EstadoArticulo.EMPENIADO }
+                new Inventario { Id = 11, NumeroContrato = 7002, Estado = EstadoArticulo.EMPENIADO }
             };
 
             // ACT: El cliente cancela y retira sus prendas hoy

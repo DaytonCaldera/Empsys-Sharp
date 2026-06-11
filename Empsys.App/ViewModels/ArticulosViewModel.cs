@@ -138,8 +138,7 @@ namespace Empsys.App.ViewModels
                 {
                     Descripcion = this.Descripcion,
                     FamiliaId = this.SelectedFamiliaId.Value,
-                    CategoriaId = this.SelectedCategoriaId.Value,
-                    Estado = EstadoArticulo.INVENTARIO
+                    CategoriaId = this.SelectedCategoriaId.Value
                 };
 
                 // 3. Persistencia mediante el Core

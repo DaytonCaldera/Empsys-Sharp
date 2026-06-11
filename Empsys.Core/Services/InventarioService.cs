@@ -61,5 +61,7 @@ namespace Empsys.Core.Services
             _dbContext.Articulos.Add(nuevoArticulo);
             _dbContext.SaveChanges();
         }
+
+        public List<Articulo> ObtenerArticulosPorCategoria(int categoriaId) => _dbContext.Articulos.Where(a => a.CategoriaId == categoriaId).ToList();
     }
 }

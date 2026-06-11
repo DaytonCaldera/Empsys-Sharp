@@ -14,6 +14,7 @@ namespace Empsys.Core.Data
         public DbSet<Familia> Familias { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Inventario> Inventarios { get; set; }
 
 
         public EmpsysDbContext()
@@ -55,8 +56,8 @@ namespace Empsys.Core.Data
                 .Property(c => c.Estado)
                 .HasConversion<string>();
 
-            modelBuilder.Entity<Articulo>()
-                .Property(a => a.Estado)
+            modelBuilder.Entity<Inventario>()
+                .Property(i => i.Estado)
                 .HasConversion<string>();
 
             modelBuilder.Entity<Cliente>()

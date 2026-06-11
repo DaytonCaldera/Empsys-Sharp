@@ -1,0 +1,85 @@
+<Page
+    x:Class="Empsys.App.Views.ContratoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:Empsys.Core.Models"
+    Background="{StaticResource EmpsysBackgroundBrush}">
+
+    <ScrollViewer>
+        <StackPanel Padding="40" Spacing="25">
+
+            <TextBlock Text="Creación de Contrato de Empeño" Style="{ThemeResource TitleTextBlockStyle}" />
+
+            <Grid ColumnDefinitions="2*, 3*" ColumnSpacing="30">
+                <StackPanel Grid.Column="0" Spacing="10">
+                    <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                        <TextBox Header="Cédula" Text="{x:Bind ViewModel.CedulaBusqueda, Mode=TwoWay}" Grid.Column="0"/>
+                        <Button Content="Buscar" Command="{x:Bind ViewModel.BuscarClienteCommand}" Grid.Column="1" VerticalAlignment="Bottom" Style="{StaticResource EmpsysBotonPrincipal}"/>
+                    </Grid>
+                    <TextBlock Text="{x:Bind ViewModel.NombreCliente, Mode=OneWay}" Foreground="{StaticResource EmpsysPrimaryBrush}" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+
+            <Border BorderBrush="LightGray" BorderThickness="1" Padding="20" CornerRadius="8" Background="{StaticResource EmpsysBackgroundBrush}">
+                <StackPanel Spacing="15">
+                    <TextBlock Text="Seleccionar Artículo del Catálogo" FontWeight="Bold"/>
+
+                    <Grid ColumnDefinitions="1.2*, 1.2*, 2*, 1*, Auto" ColumnSpacing="15">
+                        <ComboBox Grid.Column="0" PlaceholderText="Familia" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Familias}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{x:Bind ViewModel.SelectedFamiliaId, Mode=TwoWay}"/>
+                        <ComboBox Grid.Column="1" PlaceholderText="Categoría" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.Categorias, Mode=OneWay}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{x:Bind ViewModel.SelectedCategoriaId, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.HasCategorias, Mode=OneWay}"/>
+
+                        <ComboBox Grid.Column="2" PlaceholderText="Artículo" HorizontalAlignment="Stretch" ItemsSource="{x:Bind ViewModel.ArticulosCatalogo, Mode=OneWay}" DisplayMemberPath="Descripcion" SelectedValuePath="Id" SelectedValue="{x:Bind ViewModel.SelectedArticuloId, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.HasArticulos, Mode=OneWay}"/>
+
+                        <TextBox Grid.Column="3" PlaceholderText="Valor ($)" Text="{x:Bind ViewModel.ValorArticuloTexto, Mode=OneWay}" IsReadOnly="True"/>
+
+                        <Button Grid.Column="4" Content="Incluir" Command="{x:Bind ViewModel.AgregarArticuloAlGridCommand}" Style="{StaticResource EmpsysBotonPrincipal}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="3*, 2*" ColumnSpacing="30" Height="260">
+
+                <Grid Grid.Column="0" ColumnDefinitions="*, Auto" ColumnSpacing="15">
+                    <ListView Grid.Column="0" ItemsSource="{x:Bind ViewModel.ArticulosEnGrid}" SelectedItem="{x:Bind ViewModel.ArticuloSeleccionadoEnGrid, Mode=TwoWay}" BorderBrush="LightGray" BorderThickness="1" CornerRadius="6" Background="{StaticResource EmpsysBackgroundBrush}">
+                        <ListView.Header>
+                            <Grid Padding="15" Background="#EFEFEF" ColumnDefinitions="3*, 1*">
+                                <TextBlock Grid.Column="0" Text="Detalle del Artículo" FontWeight="Bold"/>
+                                <TextBlock Grid.Column="1" Text="Valor" FontWeight="Bold" HorizontalAlignment="Right"/>
+                            </Grid>
+                        </ListView.Header>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Inventario">
+                                <Grid Padding="10,12" ColumnDefinitions="3*, 1*">
+                                    <TextBlock Grid.Column="1" Text="{x:Bind PrecioEstimado}" HorizontalAlignment="Right" FontWeight="SemiBold"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Grid.Column="1" Content="Excluir" Command="{x:Bind ViewModel.QuitarArticuloDelGridCommand}" VerticalAlignment="Top" Background="{StaticResource EmpsysDangerBrush}" Foreground="White" CornerRadius="4"/>
+                </Grid>
+
+                <TextBox Grid.Column="1" 
+                         Header="Descripción / Notas del Contrato" 
+                         Text="{x:Bind ViewModel.DescripcionContrato, Mode=TwoWay}" 
+                         AcceptsReturn="True" 
+                         TextWrapping="Wrap" 
+                         VerticalAlignment="Stretch" 
+                         HorizontalAlignment="Stretch"/>
+            </Grid>
+
+            <Grid ColumnDefinitions="Auto, Auto, *, Auto" ColumnSpacing="30" Margin="0,15,0,0">
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Total Préstamo:" FontSize="14" Foreground="Gray"/>
+                    <TextBlock Text="{x:Bind ViewModel.TotalPrestamo, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource EmpsysSuccessBrush}"/>
+                </StackPanel>
+
+                <TextBox Grid.Column="1" Header="% Interés" Text="{x:Bind ViewModel.TasaInteresTexto, Mode=TwoWay}" Width="100"/>
+
+                <!--<Button Grid.Column="3" Content="💾 Procesar y Guardar Contrato" Command="{x:Bind ViewModel.EmitirContratoCommand}" Style="{StaticResource EmpsysBotonPrincipal}" Height="55" FontSize="18" MinWidth="250" VerticalAlignment="Bottom"/>-->
+            </Grid>
+
+            <TextBlock Text="{x:Bind ViewModel.Mensaje, Mode=OneWay}" Foreground="{StaticResource EmpsysPrimaryBrush}" FontWeight="SemiBold" FontSize="16"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>

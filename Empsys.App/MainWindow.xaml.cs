@@ -50,6 +50,10 @@ namespace Empsys.App
             // Enrutador directo: según el Tag, inyecta el tipo de página correspondiente
             switch (tag)
             {
+                case "ContratosPage":
+                    ContenedorPrincipal.Navigate(typeof(ContratoView));
+                    sender.Header = "Gestión de Contratos";
+                    break;
                 case "ClientesPage":
                     ContenedorPrincipal.Navigate(typeof(ClienteView));
                     sender.Header = "Gestión de Clientes";
