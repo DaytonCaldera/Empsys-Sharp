@@ -29,5 +29,24 @@ namespace Empsys.App.Views
         {
             InitializeComponent();
         }
+
+        // ContratoView.xaml.cs
+        private void CedulaEnter_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            ViewModel.BuscarClienteCommand.Execute(null);
+            args.Handled = true;
+        }
+
+        private void ValorEnter_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            ViewModel.AgregarArticuloAlGridCommand.Execute(null);
+            args.Handled = true;
+        }
+
+        private void ListaDelete_Invoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
+        {
+            ViewModel.QuitarArticuloDelGridCommand.Execute(null);
+            args.Handled = true;
+        }
     }
 }

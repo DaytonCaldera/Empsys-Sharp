@@ -10,9 +10,9 @@ namespace Empsys.Core.Services
     public class ContratoService
     {
         private readonly FinanzasService _finanzasService;
-        private readonly EmpsysDbContext _dbContext;
+        private readonly IEmpsysDbContext _dbContext;
 
-        public ContratoService(EmpsysDbContext dbContext)
+        public ContratoService(IEmpsysDbContext dbContext)
         {
             _dbContext = dbContext;
             _finanzasService = new FinanzasService();
@@ -20,6 +20,7 @@ namespace Empsys.Core.Services
 
         public Contrato CrearNuevoContrato(Cliente cliente, List<Inventario> articulosEnGrid, string descripcionContrato, decimal tasaInteres)
         {
+
             if (cliente == null || !cliente.EsElegibleParaPrestamo)
                 throw new InvalidOperationException("Cliente no válido o con riesgo problemático.");
 
@@ -28,9 +29,18 @@ namespace Empsys.Core.Services
 
             // El monto total se calcula matemáticamente sumando el grid (a prueba de errores humanos)
             decimal montoTotalCalculado = articulosEnGrid.Sum(a => a.PrecioEstimado);
+            int nextId = (_dbContext.Contratos.Max(c => (int?)c.NumeroContrato) ?? 0) + 1;
+
+            // Procesamos cada artículo del grid
+            foreach (var articulo in articulosEnGrid)
+            {
+                articulo.Estado = EstadoArticulo.EMPENIADO;
+                articulo.NumeroContrato = nextId;
+            }
 
             var nuevoContrato = new Contrato
             {
+                NumeroContrato = nextId,
                 ClienteId = cliente.Id,
                 Descripcion = descripcionContrato,
                 MontoPrestamo = montoTotalCalculado,
@@ -38,18 +48,10 @@ namespace Empsys.Core.Services
                 FechaInicio = DateTime.Now.Date,
                 FechaVencimiento = DateTime.Now.Date.AddDays(30),
                 Estado = EstadoContrato.ACTIVO,
-                Inventarios = new List<Inventario>()
+                Inventarios = articulosEnGrid
             };
 
-            // Procesamos cada artículo del grid
-            foreach (var articulo in articulosEnGrid)
-            {
-                articulo.Estado = EstadoArticulo.EMPENIADO;
-                nuevoContrato.Inventarios.Add(articulo);
-
-                // Como los estamos creando al vuelo, los agregamos a la BD
-                _dbContext.Inventarios.Add(articulo);
-            }
+            
 
             _dbContext.Contratos.Add(nuevoContrato);
 

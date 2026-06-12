@@ -3,6 +3,7 @@ using System;
 using Empsys.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Empsys.Core.Migrations
 {
     [DbContext(typeof(EmpsysDbContext))]
-    partial class EmpsysDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260611221047_TablaInventarios")]
+    partial class TablaInventarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.28");
@@ -68,23 +71,11 @@ namespace Empsys.Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Apellido1")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Apellido2")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Cedula")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("NivelRiesgo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -162,6 +153,9 @@ namespace Empsys.Core.Migrations
                     b.Property<int>("ArticuloId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ContratoNumeroContrato")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -176,46 +170,9 @@ namespace Empsys.Core.Migrations
 
                     b.HasIndex("ArticuloId");
 
-                    b.HasIndex("NumeroContrato");
+                    b.HasIndex("ContratoNumeroContrato");
 
                     b.ToTable("Inventarios");
-                });
-
-            modelBuilder.Entity("Empsys.Core.Models.Pago", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("FechaPago")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("MesesPagados")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("NuevaFechaVencimiento")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("NumeroContrato")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NumeroContrato");
-
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Pagos");
                 });
 
             modelBuilder.Entity("Empsys.Core.Models.Usuario", b =>
@@ -290,32 +247,13 @@ namespace Empsys.Core.Migrations
 
                     b.HasOne("Empsys.Core.Models.Contrato", "Contrato")
                         .WithMany("Inventarios")
-                        .HasForeignKey("NumeroContrato")
+                        .HasForeignKey("ContratoNumeroContrato")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Articulo");
 
                     b.Navigation("Contrato");
-                });
-
-            modelBuilder.Entity("Empsys.Core.Models.Pago", b =>
-                {
-                    b.HasOne("Empsys.Core.Models.Contrato", "Contrato")
-                        .WithMany()
-                        .HasForeignKey("NumeroContrato")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Empsys.Core.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Contrato");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Empsys.Core.Models.Contrato", b =>

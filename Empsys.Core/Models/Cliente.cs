@@ -4,6 +4,9 @@
     {
         public int Id { get; set; }
         public string Cedula { get; set; } = string.Empty;
+        public string Nombre { get; set; } = string.Empty;
+        public string Apellido1 { get; set; } = string.Empty;
+        public string Apellido2 { get; set; } = string.Empty;
         public string NombreCompleto { get; set; } = string.Empty;
 
         // Usamos el Enum tipado

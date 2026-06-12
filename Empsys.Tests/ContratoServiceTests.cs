@@ -1,6 +1,8 @@
 ﻿using Empsys.Core.Data;
 using Empsys.Core.Models;
 using Empsys.Core.Services;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -10,11 +12,18 @@ namespace Empsys.Tests
     public class ContratoServiceTests
     {
         private readonly ContratoService _service;
+        private readonly List<Contrato> _contratosData = new List<Contrato> { };
 
         public ContratoServiceTests()
         {
             var dbContext = new EmpsysDbContext();
-            _service = new ContratoService(dbContext);
+            var mockContratos = MockDbSet(_contratosData);
+
+            var mockContext = new Mock<IEmpsysDbContext>();
+            mockContext.Setup(c => c.Contratos).Returns(mockContratos.Object);
+            mockContext.Setup(c => c.SaveChanges()).Returns(1);
+
+            _service = new ContratoService(mockContext.Object);
         }
 
         [Fact]
@@ -140,6 +149,57 @@ namespace Empsys.Tests
             Assert.Equal(fechaInicOriginal, contrato.FechaInicio);
             Assert.Equal(fechaVencOriginal, contrato.FechaVencimiento);
             Assert.Equal(EstadoContrato.ACTIVO, contrato.Estado);
+        }
+
+        [Fact]
+        public void GenerarUnContratoNuevo_DeberiaCrearContratoConDatosCorrectos_CuandoSeProporcionanParametrosValidos()
+        {
+            // ARRANGE
+            var cliente = new Cliente
+            {
+                Id = 300,
+                NombreCompleto = "Carlos Pérez",
+                Cedula = "1234567890",
+                NivelRiesgo = NivelRiesgoCliente.Confiable
+            };
+
+            var articulos = new List<Inventario> {
+                new Inventario { Id = 20, PrecioEstimado = 3000 },
+                new Inventario { Id = 21, PrecioEstimado = 2000 }
+            };
+
+            string descripcion = "Préstamo para compra de joyas";
+            decimal tasaInteres = 10;
+            decimal montoEsperado = 5000;
+            DateTime fechaInicioEsperada = DateTime.Now.Date;
+            DateTime fechaVencimientoEsperada = DateTime.Now.Date.AddDays(30);
+
+            // ACT
+            Contrato nuevoContrato = _service.CrearNuevoContrato(cliente, articulos, descripcion, tasaInteres);
+
+            // ASSERT
+            Assert.NotNull(nuevoContrato);
+            Assert.Equal(cliente.Id, nuevoContrato.ClienteId);
+            Assert.Equal(descripcion, nuevoContrato.Descripcion);
+            Assert.Equal(montoEsperado, nuevoContrato.MontoPrestamo);
+            Assert.Equal(tasaInteres, nuevoContrato.TasaInteresMensual);
+            Assert.Equal(fechaInicioEsperada, nuevoContrato.FechaInicio);
+            Assert.Equal(fechaVencimientoEsperada, nuevoContrato.FechaVencimiento);
+            Assert.Equal(EstadoContrato.ACTIVO, nuevoContrato.Estado);
+            Assert.Equal(2, nuevoContrato.Inventarios.Count);
+        }
+
+        // Reusable helper for all tests in this class
+        private static Mock<DbSet<T>> MockDbSet<T>(List<T> data) where T : class
+        {
+            var queryable = data.AsQueryable();
+            var mock = new Mock<DbSet<T>>();
+            mock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(queryable.Provider);
+            mock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(queryable.Expression);
+            mock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(queryable.ElementType);
+            mock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(queryable.GetEnumerator());
+            mock.Setup(m => m.Add(It.IsAny<T>())).Callback<T>(data.Add);
+            return mock;
         }
     }
 }

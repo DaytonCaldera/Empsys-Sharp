@@ -3,6 +3,7 @@ using System;
 using Empsys.Core.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Empsys.Core.Migrations
 {
     [DbContext(typeof(EmpsysDbContext))]
-    partial class EmpsysDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260612034426_UpdateTablaUsuarios")]
+    partial class UpdateTablaUsuarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.28");
@@ -162,6 +165,9 @@ namespace Empsys.Core.Migrations
                     b.Property<int>("ArticuloId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("ContratoNumeroContrato")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -176,7 +182,7 @@ namespace Empsys.Core.Migrations
 
                     b.HasIndex("ArticuloId");
 
-                    b.HasIndex("NumeroContrato");
+                    b.HasIndex("ContratoNumeroContrato");
 
                     b.ToTable("Inventarios");
                 });
@@ -290,7 +296,7 @@ namespace Empsys.Core.Migrations
 
                     b.HasOne("Empsys.Core.Models.Contrato", "Contrato")
                         .WithMany("Inventarios")
-                        .HasForeignKey("NumeroContrato")
+                        .HasForeignKey("ContratoNumeroContrato")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

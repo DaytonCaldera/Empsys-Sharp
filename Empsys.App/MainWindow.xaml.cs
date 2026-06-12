@@ -54,6 +54,10 @@ namespace Empsys.App
                     ContenedorPrincipal.Navigate(typeof(ContratoView));
                     sender.Header = "Gestión de Contratos";
                     break;
+                case "RenovacionesPage":
+                    ContenedorPrincipal.Navigate(typeof(CajaView));
+                    sender.Header = "Gestión de Contratos";
+                    break;
                 case "ClientesPage":
                     ContenedorPrincipal.Navigate(typeof(ClienteView));
                     sender.Header = "Gestión de Clientes";

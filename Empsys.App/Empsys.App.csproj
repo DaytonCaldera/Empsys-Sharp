@@ -15,6 +15,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Views\ArticuloView.xaml" />
+    <None Remove="Views\CajaView.xaml" />
     <None Remove="Views\CategoriaView.xaml" />
     <None Remove="Views\ClienteView.xaml" />
     <None Remove="Views\ContratoView.xaml" />
@@ -54,6 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Empsys.Core\Empsys.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\CajaView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\ContratoView.xaml">

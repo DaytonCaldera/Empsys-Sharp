@@ -2,10 +2,11 @@
 using Empsys.Core.Models;
 using System;
 using System.IO;
+using System.Diagnostics;
 
 namespace Empsys.Core.Data
 {
-    public class EmpsysDbContext : DbContext
+    public class EmpsysDbContext : DbContext, IEmpsysDbContext
     {
         // Estas propiedades representan las tablas reales en la base de datos
         public DbSet<Cliente> Clientes { get; set; }
@@ -15,6 +16,7 @@ namespace Empsys.Core.Data
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Inventario> Inventarios { get; set; }
+        public DbSet<Pago> Pagos { get; set; }
 
 
         public EmpsysDbContext()
@@ -29,15 +31,20 @@ namespace Empsys.Core.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             if (!optionsBuilder.IsConfigured)
             {
                 // Definimos que sea un archivo local, portátil y liviano.
                 // Quedará guardado en la carpeta del usuario (AppData) para evitar problemas de permisos en Windows 10/11
                 string folder = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
                 string path = Path.Combine(folder, "empsys_data.db");
+                Debug.WriteLine($"Data Source={path}");
+                optionsBuilder.UseSqlite($"Data Source={path}").EnableSensitiveDataLogging()
+                  .LogTo(message => System.Diagnostics.Debug.WriteLine(message),
+                         Microsoft.Extensions.Logging.LogLevel.Information);
 
-                optionsBuilder.UseSqlite($"Data Source={path}");
             }
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -73,6 +80,18 @@ namespace Empsys.Core.Data
                     NombreCompleto = "Administrador del Sistema"
                 }
             );
+            modelBuilder.Entity<Pago>()
+                .HasOne(p => p.Contrato)
+                .WithMany()
+                .HasForeignKey(p => p.NumeroContrato);
+
+            modelBuilder.Entity<Pago>()
+                .Property(p => p.Tipo)
+                .HasConversion<string>();
+            modelBuilder.Entity<Inventario>()
+                .HasOne(i => i.Contrato)
+                .WithMany(c => c.Inventarios)
+                .HasForeignKey(i => i.NumeroContrato);
         }
     }
 }

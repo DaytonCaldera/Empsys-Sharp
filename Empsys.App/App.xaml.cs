@@ -45,7 +45,6 @@ namespace Empsys.App
 
                 // Si no quieres meter la dependencia de WinForms para el cuadro de diálogo, 
                 // puedes escribirlo en un archivo de texto temporal:
-                System.IO.File.WriteAllText("error_log.txt", message);
             };
         }
 

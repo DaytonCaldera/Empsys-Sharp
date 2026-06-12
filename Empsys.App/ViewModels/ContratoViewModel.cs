@@ -130,25 +130,25 @@ namespace Empsys.App.ViewModels
             if (ArticuloSeleccionadoEnGrid != null) ArticulosEnGrid.Remove(ArticuloSeleccionadoEnGrid);
         }
 
-        //[RelayCommand]
-        //public void EmitirContrato()
-        //{
-        //    try
-        //    {
-        //        if (!decimal.TryParse(TasaInteresTexto, out decimal tasa)) return;
+        [RelayCommand]
+        public void EmitirContrato()
+        {
+            try
+            {
+                if (!decimal.TryParse(TasaInteresTexto, out decimal tasa)) return;
 
-        //        var contrato = _contratoService.CrearNuevoContrato(ClienteActual, ArticulosEnGrid.ToList(), DescripcionContrato, tasa);
+                var contrato = _contratoService.CrearNuevoContrato(ClienteActual, ArticulosEnGrid.ToList(), DescripcionContrato, tasa);
 
-        //        Mensaje = $"¡CONTRATO #{contrato.NumeroContrato} EMITIDO CON ÉXITO!";
-        //        ArticulosEnGrid.Clear();
-        //        DescripcionContrato = string.Empty;
-        //        CedulaBusqueda = string.Empty;
-        //        NombreCliente = "Ingrese cédula...";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Mensaje = $"Error: {ex.Message}";
-        //    }
-        //}
+                Mensaje = $"¡CONTRATO #{contrato.NumeroContrato} EMITIDO CON ÉXITO!";
+                ArticulosEnGrid.Clear();
+                DescripcionContrato = string.Empty;
+                CedulaBusqueda = string.Empty;
+                NombreCliente = "Ingrese cédula...";
+            }
+            catch (Exception ex)
+            {
+                Mensaje = $"Error: {ex.Message} \n {ex.StackTrace}";
+            }
+        }
     }
 }

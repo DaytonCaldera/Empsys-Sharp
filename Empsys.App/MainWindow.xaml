@@ -18,6 +18,7 @@
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Empeños"/>
                 <NavigationViewItem Content="Contratos" Tag="ContratosPage" Icon="Document" />
+                <NavigationViewItem Content="Renovaciones" Tag="RenovacionesPage" Icon="Calculator" />
                 <NavigationViewItemSeparator/>
                 <NavigationViewItemHeader Content="Inventario"/>
                 <NavigationViewItem Content="Familias" Tag="FamiliasPage" Icon="Folder" />
