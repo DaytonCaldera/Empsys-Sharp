@@ -124,12 +124,12 @@
                             <ListView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Pago">
                                     <Grid Padding="10" ColumnDefinitions="*, Auto, Auto, *">
-                                        <TextBlock Grid.Column="0" Text="{x:Bind FechaPago, Converter={StaticResource FechaSencillaConverter}}" Foreground="#111827"/>
+                                        <TextBlock Grid.Column="0" Text="{x:Bind FechaPago}" Foreground="#111827"/>
                                         <TextBlock Grid.Column="1" Text="{x:Bind Tipo}" Foreground="#111827" Width="80" HorizontalAlignment="Center"/>
 
                                         <TextBlock Grid.Column="2" Text="{x:Bind MesesPagados}" Foreground="#111827" Width="60" HorizontalAlignment="Center" FontWeight="SemiBold"/>
 
-                                        <TextBlock Grid.Column="3" Text="{x:Bind NuevaFechaVencimiento, Converter={StaticResource FechaSencillaConverter}}" Foreground="#D13438" HorizontalAlignment="Right" FontWeight="Bold"/>
+                                        <TextBlock Grid.Column="3" Text="{x:Bind NuevaFechaVencimiento}" Foreground="#D13438" HorizontalAlignment="Right" FontWeight="Bold"/>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
